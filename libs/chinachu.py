@@ -1,4 +1,4 @@
-from client import Reserves, Recorded
+from libs.client import Reserves, Recorded, Recording
 
 
 class ChinachuClient:
@@ -14,3 +14,7 @@ class ChinachuClient:
     @property
     def recorded(self):
         return Recorded(self.url, self.auth)
+
+    @property
+    def recording(self):
+        return Recording(self.url, self.auth)
