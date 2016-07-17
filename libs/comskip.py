@@ -1,16 +1,13 @@
 from libs.config import Config
-from libs.decorator import lockfile_manager
+from libs.decorator import lockfile_manager, recording_busy
 from libs.common import Base, copy_timestamp
-from libs import chinachu
 
 config = Config().comskip
 lock_file = config['lock_file']
-client = chinachu.client()
 
 
+@recording_busy
 def comskip_execute(filename):
-    if client.recording.is_busy():
-        raise RuntimeError('Recording now')
     comskip = ComskipBatchWrapper()
     comskip.execute(filename)
 

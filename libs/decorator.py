@@ -1,5 +1,16 @@
 import os
 from functools import wraps
+from libs import chinachu
+
+
+def recording_busy(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        client = chinachu.client()
+        if client.recording.is_busy():
+            raise RuntimeError('Recording now')
+        func(*args, **kwargs)
+    return wrapper
 
 
 def lockfile_manager(lockfile):
