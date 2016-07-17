@@ -28,5 +28,5 @@ def encode():
 
 
 if __name__ == '__main__':
-    # comskip()
+    comskip()
     encode()
