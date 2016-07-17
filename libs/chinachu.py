@@ -1,4 +1,13 @@
+from libs.config import Config
 from libs.client import Reserves, Recorded, Recording
+
+config = Config().chinachu
+
+
+def client():
+    return ChinachuClient(
+            config['url'], config['port'],
+            (config['user'], config['pass']))
 
 
 class ChinachuClient:

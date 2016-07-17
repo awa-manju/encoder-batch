@@ -1,18 +1,21 @@
-import os
-import subprocess
 from libs.config import Config
 from libs.decorator import lockfile_manager
+from libs.common import Base, copy_timestamp
+from libs import chinachu
 
 config = Config().comskip
 lock_file = config['lock_file']
+client = chinachu.client()
 
 
 def comskip_execute(filename):
+    if client.recording.is_busy():
+        raise RuntimeError('Recording now')
     comskip = ComskipBatchWrapper()
     comskip.execute(filename)
 
 
-class ComskipBatchWrapper:
+class ComskipBatchWrapper(Base):
 
     def __init__(self):
         self.cmd = config['cmd']
@@ -21,37 +24,8 @@ class ComskipBatchWrapper:
 
     @lockfile_manager(lock_file)
     def execute(self, filename):
-        timestamp = self._get_timestamp(filename)
-        cmd_opt = self._create_cmd_opt(
-                margin=3, filename=self.filename,
-                move_to=self.dest_dir, failed_to=self.backup_dir)
+        cmd_opt = self._create_cmd_opt({
+                'margin': '3', 'file': filename,
+                'move_to': self.dest_dir, 'failed_to': self.backup_dir})
         self._execute_cmd(self.cmd, cmd_opt)
-        moved_file = os.path.join(self.dest_dir, os.path.basename(filename))
-        self._update_timestamp(moved_file, timestamp)
-
-    def _get_timestamp(self, filename):
-        return os.stat(filename).st_mtime
-
-    def _create_cmd_opt(
-            self, margin=3, filename=None, move_to=None, failed_to=None):
-        # cmd opt
-        cmd_opt = []
-        cmd_opt.append('--margin')
-        cmd_opt.append(margin)
-        cmd_opt.append('--file')
-        cmd_opt.append(filename)
-        cmd_opt.append('--move_to')
-        cmd_opt.append(move_to)
-        cmd_opt.append('--failed_to')
-        cmd_opt.append(failed_to)
-        return cmd_opt
-
-    def _execute_cmd(self, cmd, opt):
-        # execute command
-        full_cmd = opt[:]
-        full_cmd.insert(0, cmd)
-        subprocess.call(full_cmd)
-
-    def _update_timestamp(self, filename, timestamp):
-        # mod timestamp
-        os.utime(filename, (timestamp, timestamp))
+        copy_timestamp(filename, afterdir=self.dest_dir)
