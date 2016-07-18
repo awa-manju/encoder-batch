@@ -25,4 +25,4 @@ class ComskipBatchWrapper(Base):
                 'margin': '3', 'file': filename,
                 'move_to': self.dest_dir, 'failed_to': self.backup_dir})
         self._execute_cmd(self.cmd, cmd_opt)
-        copy_timestamp(filename, afterdir=self.dest_dir)
+        # copy_timestamp(filename, afterdir=self.dest_dir)

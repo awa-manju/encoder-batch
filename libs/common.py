@@ -4,6 +4,13 @@ from abc import ABCMeta, abstractmethod
 from glob import glob
 
 
+def any_file_exists(files):
+    for fl in files:
+        if os.path.exists(fl):
+            return True
+    return False
+
+
 def ls_files(dirname, prefix='*', suffix='.*', recursive=False):
     recursivedir = '**' if recursive else ''
     path = os.path.join(dirname, recursivedir, prefix + suffix)

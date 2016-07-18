@@ -38,7 +38,14 @@ class Encoder(Base):
                 os.path.dirname(filename), os.path.basename(basefilename) + ext)
         encoded_dstfile = os.path.join(
                 self.dest_dir, os.path.basename(basefilename) + ext)
+        src_backupfile = os.path.join(
+                self.backup_dir, os.path.basename(filename))
         try:
             shutil.move(encoded_srcfile, encoded_dstfile)
+        except OSError:
+            pass
+
+        try:
+            shutil.move(filename, src_backupfile)
         except OSError:
             pass

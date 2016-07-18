@@ -1,4 +1,4 @@
-from libs.common import ls_files
+from libs.common import ls_files, any_file_exists
 from libs.comskip import comskip_execute
 from libs.encoder import encoder_execute
 from libs.config import Config
@@ -17,16 +17,26 @@ def comskip():
     src_dir = config_comskip['src_dir']
     file_for_comskip = a_file(src_dir)
     if file_for_comskip is not None:
-        comskip_execute(file_for_comskip)
+        try:
+            comskip_execute(file_for_comskip)
+        except RuntimeError as e:
+            print('{}'.format(e))
 
 
 def encode():
     src_dir = config_encoder['src_dir']
     file_for_encode = a_file(src_dir)
     if file_for_encode is not None:
-        encoder_execute(file_for_encode)
+        try:
+            encoder_execute(file_for_encode)
+        except RuntimeError as e:
+            print('{}'.format(e))
 
 
 if __name__ == '__main__':
-    comskip()
+    lockfiles = [config_comskip['lock_file'], config_encoder['lock_file']]
+    if any_file_exists(lockfiles):
+        print('lockfile exists...')
+        exit()
     encode()
+    comskip()
