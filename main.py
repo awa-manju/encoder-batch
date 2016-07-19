@@ -21,6 +21,11 @@ lockfile_encode = '/tmp/ffmpeg_encode.lock'
 batch_comskip = os.path.join(os.path.dirname(__file__), "comskip.sh")
 batch_encode = os.path.join(os.path.dirname(__file__), "encode.sh")
 
+with open('/home/yuta/chinachu/data/recording.json', 'r') as f:
+    if f.read() != '[]':
+        exit()
+
+
 ignore_comskip_strs = [
         'GR26',
         'GR27'
