@@ -59,9 +59,9 @@ def move_ignore_files(files, ignore_strs, dest_dir):
 
 
 if __name__ == '__main__':
-    if not lockfile_exists(lockfile_encode):
+    if lockfile_exists(lockfile_encode):
         exit()
-    if not lockfile_exists(lockfile_comskip):
+    if lockfile_exists(lockfile_comskip):
         exit()
 
     enc_files = ls_files(encoding_dir, encording_suffix)
