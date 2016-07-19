@@ -22,7 +22,9 @@ batch_comskip = os.path.join(os.path.dirname(__file__), "comskip.sh")
 batch_encode = os.path.join(os.path.dirname(__file__), "encode.sh")
 
 with open('/home/yuta/chinachu/data/recording.json', 'r') as f:
-    if f.read() != '[]':
+    jsonstr = f.read()
+    if not '[]' in jsonstr:
+        print('exit')
         exit()
 
 
