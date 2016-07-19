@@ -59,6 +59,11 @@ def move_ignore_files(files, ignore_strs, dest_dir):
 
 
 if __name__ == '__main__':
+    if not lockfile_exists(lockfile_encode):
+        exit()
+    if not lockfile_exists(lockfile_comskip):
+        exit()
+
     enc_files = ls_files(encoding_dir, encording_suffix)
     if len(enc_files) > 0:
         execute_and_exit(batch_encode, enc_files[0], lockfile_encode)
