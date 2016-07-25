@@ -1,7 +1,10 @@
+#!/home/yuta/.pyenv/shims/python
+
 import sys
 import os
 import json
 import datetime
+import uuid
 from string import Template
 
 
@@ -36,7 +39,8 @@ encoded_data_name = recoreded_data_base + '.mp4'
 
 lockfile = 'ffmpeg_encode.lock'
 template_file = os.path.join(os.path.dirname(__file__), 'post_recorded.sh.template')
-output_file = os.path.join('/tmp', recoreded_data_base + '.sh')
+output_file = os.path.join('/tmp', str(uuid.uuid1()))
+renamed_file = os.path.join('/tmp', recoreded_data_base + '.sh')
 
 
 if __name__ == '__main__':
@@ -59,3 +63,5 @@ if __name__ == '__main__':
                     SELFPATH=output_file
                     )
             outf.write(outstr)
+
+    os.rename(output_file, renamed_file)
