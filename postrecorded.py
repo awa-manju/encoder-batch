@@ -60,7 +60,7 @@ if __name__ == '__main__':
                     PROGRAM_TITLE=program_data['title'],
                     ENCODE_DSTDIR=encoded_data_dstdir,
                     TIMESTAMP=program_data_timestamp,
-                    SELFPATH=output_file
+                    SELFPATH=renamed_file
                     )
             outf.write(outstr)
 
