@@ -2,6 +2,7 @@
 
 import sys
 import os
+import stat
 import json
 import datetime
 import uuid
@@ -65,3 +66,6 @@ if __name__ == '__main__':
             outf.write(outstr)
 
     os.rename(output_file, renamed_file)
+    os.chmod(renamed_file, stat.S_IXUSR)
+    os.chmod(renamed_file, stat.S_IXGRP)
+    os.chmod(renamed_file, stat.S_IXOTH)
