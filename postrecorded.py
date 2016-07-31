@@ -21,7 +21,8 @@ def to_datetime(unixtime_milli):
     return datetime.datetime.fromtimestamp(unixtime_sec)
 
 
-recoreded_data_path = argvs[1]
+recoreding_data_path = argvs[1]
+recoreded_data_path = os.path.dirname(recoreding_data_path)
 recoreded_data_dir = os.path.dirname(recoreded_data_path)
 recoreded_data_name = os.path.basename(recoreded_data_path)
 recoreded_data_base, _ = os.path.splitext(recoreded_data_name)
@@ -66,4 +67,4 @@ if __name__ == '__main__':
             outf.write(outstr)
 
     os.rename(output_file, renamed_file)
-    os.chmod(renamed_file, stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+    os.chmod(renamed_file, 0755)

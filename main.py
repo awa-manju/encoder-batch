@@ -15,11 +15,13 @@ recording_suffix = '.m2ts'
 encoding_dir = '/mnt/videos/encoding'
 encording_suffix = '.m2ts'
 
-lockfile_comskip = '/tmp/comskip.lock'
+lockfile_comskip = '/tmp/ffmpeg_encode.lock'
 lockfile_encode = '/tmp/ffmpeg_encode.lock'
 
 batch_comskip = os.path.join(os.path.dirname(__file__), "comskip.sh")
 batch_encode = os.path.join(os.path.dirname(__file__), "encode.sh")
+print(__file__)
+print(batch_comskip)
 
 with open('/home/yuta/chinachu/data/recording.json', 'r') as f:
     jsonstr = f.read()
