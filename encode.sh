@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $(dirname $0)/slack_webhook.sh
+
 LOCKFILE=/tmp/ffmpeg_encode.lock
 VIDEOFILE="$1"
 JSONFILE=$VIDEOFILE.json
@@ -21,7 +23,8 @@ touch $LOCKFILE
 
 $CMD \
 -y -i $VIDEOFILE \
--preset:v veryfast -b:v 2M \
+-s 1280x720 \
+-preset:v veryfast \
 -passlogfile /tmp/$BASENAME.log \
 $DIRNAME/$BASENAME.mp4
 
@@ -37,8 +40,9 @@ mv "$DIRNAME/$BASENAME.log" "$BACKUPTO"
 if [ -e $JSONFILE ]; then
   VIDEOTITLE=$(jq .title $JSONFILE | tr [:space:] '_' | tr -d '"' | sed -e 's/_$//')
   mv "$DIRNAME/$BASENAME.mp4" "$MOVETO/$BASENAME-$VIDEOTITLE.mp4"
+  slack_post "{\"text\":\"encode finished: $(expr $SECONDS / 60) mins\n$VIDEOTITLE\"}"
 else
-  mv "$DIRNAME/$BASENAME.mp4" "$MOVETO"
+  slack_post "{\"text\":\"encode finished: $(expr $SECONDS / 60) mins\n$VIDEOFILE\"}"
 fi
 
 mv "$DIRNAME/$BASENAME.m2ts.json" "$BACKUPTO"

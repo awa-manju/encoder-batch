@@ -1,7 +1,10 @@
 #!/bin/bash
 
+. $(dirname $0)/slack_webhook.sh
+
 LOCKFILE=/tmp/comskip.lock
 VIDEOFILE="$1"
+JSONFILE=$VIDEOFILE.json
 TIMESTAMP=$(date -r $VIDEOFILE "+%m%d%H%M")
 DIRNAME=$(dirname $VIDEOFILE)
 BASENAME="$(basename -s .m2ts $VIDEOFILE)"
@@ -32,5 +35,12 @@ mv "$DIRNAME/$BASENAME.txt" $MOVETO
 mv "$DIRNAME/$BASENAME.vdr" $MOVETO
 mv "$DIRNAME/$BASENAME.log" $MOVETO
 touch -t $TIMESTAMP "$MOVETO/$BASENAME.m2ts"
+
+if [ -e $JSONFILE ]; then
+  VIDEOTITLE=$(jq .title $JSONFILE | tr [:space:] '_' | tr -d '"' | sed -e 's/_$//')
+  slack_post "{\"text\":\"comskip finished: $(expr $SECONDS / 60) mins\n$VIDEOTITLE\"}"
+else
+  slack_post "{\"text\":\"comskip finished: $(expr $SECONDS / 60) mins\n$VIDEOFILE\"}"
+fi
 
 rm -f $LOCKFILE
