@@ -13,7 +13,7 @@ function days2sec(){
 DIR=/mnt/archive/ts/backup
 
 for i in $(find $DIR/*); do
-  if [ $(file_old $i) -gt $(days2sec 10) ]; then
+  if [ $(file_old $i) -gt $(days2sec 2) ]; then
     echo $i
   fi
 done | xargs rm -f
