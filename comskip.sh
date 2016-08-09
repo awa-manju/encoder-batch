@@ -43,9 +43,9 @@ mv "$MOVETO/$BASENAME.m2ts.tmp" "$MOVETO/$BASENAME.m2ts"
 
 if [ -e $JSONFILE ]; then
   VIDEOTITLE=$(jq .title $JSONFILE | tr [:space:] '_' | tr -d '"' | sed -e 's/_$//')
-  slack_post "{\"text\":\"comskip finished: $(expr $SECONDS / 60) mins\n$VIDEOTITLE\n$RETURN_VALUE\", \"icon_emoji\":\":clapper:\"}"
+  slack_post "{\"text\":\"$VIDEOTITLE ($(expr $SECONDS / 60) mins)\", \"icon_emoji\":\":clapper:\", \"username\":\"comskip\"}"
 else
-  slack_post "{\"text\":\"comskip finished: $(expr $SECONDS / 60) mins\n$VIDEOFILE\", \"icon_emoji\":\":clapper:\"}"
+  slack_post "{\"text\":\"$VIDEOFILE ($(expr $SECONDS / 60) mins)\", \"icon_emoji\":\":clapper:\", \"username\":\"comskip\"}"
 fi
 
 mv "$DIRNAME/$BASENAME.m2ts.chapters.xml" $MOVETO

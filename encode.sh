@@ -43,11 +43,11 @@ if [ -e $JSONFILE ]; then
   VIDEOTITLE=$(jq .title $JSONFILE | tr [:space:] '_' | tr -d '"' | sed -e 's/_$//')
   cp "$DIRNAME/$BASENAME.mp4" "$QUEUETO/$BASENAME-$VIDEOTITLE.mp4"
   mv "$DIRNAME/$BASENAME.mp4" "$MOVETO/$BASENAME-$VIDEOTITLE.mp4"
-  slack_post "{\"text\":\"encode finished: $(expr $SECONDS / 60) mins\n$VIDEOTITLE\", \"icon_emoji\":\":iphone:\"}"
+  slack_post "{\"text\":\"$VIDEOTITLE ($(expr $SECONDS / 60) mins)\", \"icon_emoji\":\":iphone:\", \"username\":\"encode\"}"
 else
   cp "$DIRNAME/$BASENAME.mp4" "$QUEUETO"
   mv "$DIRNAME/$BASENAME.mp4" "$MOVETO"
-  slack_post "{\"text\":\"encode finished: $(expr $SECONDS / 60) mins\n$VIDEOFILE\", \"icon_emoji\":\":iphone:\"}"
+  slack_post "{\"text\":\"$VIDEOFILE ($(expr $SECONDS / 60) mins)\", \"icon_emoji\":\":iphone:\", \"username\":\"encode\"}"
 fi
 
 logger $DIRNAME/$BASENAME.mp4 finished

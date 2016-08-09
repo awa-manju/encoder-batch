@@ -14,6 +14,6 @@ mv $REC_DATA $DST_DIR/$REC_DATA_BASE.tmp
 mv $DST_DIR/$REC_DATA_BASE.tmp $DST_DIR/$REC_DATA_BASE
 echo "$REC_JSON" > $DST_DIR/$REC_DATA_BASE.json
 
-slack_post "{\"text\":\"recoerded: $REC_TITLE ($LS_REC_DATA)\", \"icon_emoji\":\":vhs:\"}"
+slack_post "{\"text\":\"$REC_TITLE ($LS_REC_DATA)\", \"icon_emoji\":\":vhs:\", \"username\":\"recorded\"}"
 
-$(dirname $0)/comskip.sh $DST_DIR/$REC_DATA_BASE && $(dirname $0)/encode.sh /mnt/archive/ts/encoding/$REC_DATA_BASE 
+#$(dirname $0)/comskip.sh $DST_DIR/$REC_DATA_BASE && $(dirname $0)/encode.sh /mnt/archive/ts/encoding/$REC_DATA_BASE 
