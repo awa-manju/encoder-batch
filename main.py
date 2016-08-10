@@ -87,7 +87,10 @@ def InsertVideo(self, album_or_uri, video, filename_or_handle, content_type='ima
         })
 
     if isinstance(album_or_uri, (str, unicode)): # it's a uri
-        feed_uri = album_or_uri
+        if len(album_or_uri) == 0:
+            feed_uri = 'Instant Upload'
+        else:
+            feed_uri = album_or_uri
     elif hasattr(album_or_uri, 'GetFeedLink'): # it's a AlbumFeed object
         feed_uri = album_or_uri.GetFeedLink().href
 
