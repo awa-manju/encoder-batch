@@ -5,4 +5,4 @@
 SRC=/mnt/share/videos
 DST=/mnt/share/videos/queue
 
-list_aged_files $SRC *.mp4 4 | xargs -I{} echo mv {} $DST
+list_aged_files $SRC *.mp4 4 | xargs -I{} mv {} $DST
