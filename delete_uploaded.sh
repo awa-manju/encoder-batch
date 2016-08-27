@@ -20,10 +20,10 @@ do
   STATUS=$(cat $LOG_FILE | grep -F $FILE_NAME)
   if echo $STATUS | grep "$SUCCESS" > /dev/null; then
     rm $i
-    echo ":ok: [SUCCESS]  $PGM_NAME" >> $TMP_FILE
+    echo ":ok: $PGM_NAME" >> $TMP_FILE
   elif echo $STATUS | grep "$TOO_LARGE" > /dev/null; then
     mv $i $FAILED
-    echo ":warning: [TOOLARGE] $PGM_NAME ($FILE_SIZE)" >> $TMP_FILE
+    echo ":ng: $PGM_NAME (Too large: $FILE_SIZE)" >> $TMP_FILE
   fi
 done
 

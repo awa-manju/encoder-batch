@@ -10,7 +10,7 @@ DIRNAME="$(dirname $VIDEOFILE)"
 BASENAME="$(basename -s .m2ts $VIDEOFILE)"
 MOVETO=/mnt/share/videos
 BACKUPTO=/mnt/archive/ts/backup
-QUEUETO=/mnt/archive/mp4
+QUEUETO=/mnt/share/videos/queue
 CMD="ffmpeg"
 #CMD_OPT="-i $VIDEOFILE -passlogfile /tmp/$BASENAME.log -s 1280x720 $DIRNAME/$BASENAME.mp4"
 
@@ -41,12 +41,16 @@ logger $DIRNAME/$BASENAME.m2ts finished
 
 if [ -e $JSONFILE ]; then
   VIDEOTITLE=$(jq .title $JSONFILE | tr [:space:] '_' | tr -d '"' | sed -e 's/_$//')
-  cp "$DIRNAME/$BASENAME.mp4" "$QUEUETO/$BASENAME-$VIDEOTITLE.mp4"
+  WORD='ＷＢＳ'
+  if echo $VIDEOTITLE | grep $WORD > /dev/null; then
+    VIDEOTITLE=$WORD
+  fi
   mv "$DIRNAME/$BASENAME.mp4" "$MOVETO/$BASENAME-$VIDEOTITLE.mp4"
+  cp "$MOVETO/$BASENAME-$VIDEOTITLE.mp4" "$QUEUETO/$BASENAME-$VIDEOTITLE.mp4"
   slack_post "{\"text\":\"$VIDEOTITLE ($(expr $SECONDS / 60) mins)\", \"icon_emoji\":\":iphone:\", \"username\":\"encode\"}"
 else
-  cp "$DIRNAME/$BASENAME.mp4" "$QUEUETO"
   mv "$DIRNAME/$BASENAME.mp4" "$MOVETO"
+  cp "$MOVETO/$BASENAME.mp4" "$QUEUETO"
   slack_post "{\"text\":\"$VIDEOFILE ($(expr $SECONDS / 60) mins)\", \"icon_emoji\":\":iphone:\", \"username\":\"encode\"}"
 fi
 
